@@ -299,6 +299,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "demo_practice"
+version = "0.1.0"
+
+[[package]]
 name = "demo_queryer"
 version = "0.1.0"
 dependencies = [
