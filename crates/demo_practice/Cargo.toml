@@ -8,4 +8,4 @@ edition = "2021"
 [dependencies]
 
 [lib]
-path  = "src/enum-types/index.rs"  # This should match the name of your crate
+path  = "src/pattern-matching/match-demo.rs"  # This should match the name of your crate
