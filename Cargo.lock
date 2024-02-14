@@ -292,6 +292,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "demo_farm_compiler"
+version = "0.1.0"
+
+[[package]]
 name = "demo_guessing_game"
 version = "0.1.0"
 dependencies = [
