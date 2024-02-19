@@ -1,14 +1,17 @@
 use demo_hello_macro::HelloMacro;
-use hello_macro_derive::HelloMacro;
+use hello_macro_derive::make_answer;
+use hello_macro_derive::print_hello;
 use hello_macro_derive::show_streams;
+use hello_macro_derive::HelloMacro;
 
+// derive marco
 #[derive(HelloMacro)]
 struct Sunfei;
 
 #[derive(HelloMacro)]
 struct Sunface;
 
-
+// attribute marco
 // 以下的输出在编译阶段才会打印。可以把target文件夹删掉，然后重新编译，就会看到输出。
 // Attribute macros - #[CustomAttribute]
 // Example: Basic function
@@ -43,4 +46,10 @@ fn main() {
     invoke2();
     invoke3();
     invoke4();
+
+    // function marco
+    make_answer!(); // 创建一个answer函数
+    let _answer0 = answer();
+    println!("The answer is: {}", _answer0);
+    print_hello!(); // 打印hello输出
 }
