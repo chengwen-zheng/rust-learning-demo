@@ -26,3 +26,11 @@ pub fn hello_macro_derive(input: TokenStream) -> TokenStream {
     // 构建特征实现代码
     impl_hello_macro(&ast)
 }
+
+#[proc_macro_attribute]
+pub fn show_streams(attr: TokenStream, item: TokenStream) -> TokenStream {
+    // 下面的打印发生在编译时期
+    println!("attr: \"{}\"", attr.to_string());
+    println!("item: \"{}\"", item.to_string());
+    item
+}
