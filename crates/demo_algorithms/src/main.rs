@@ -1,6 +1,3 @@
-use std::thread;
-use std::time::Duration;
-
 fn longest_common_subsequence(s1: &str, s2: &str) -> i32 {
     let chars1: Vec<char> = s1.chars().collect();
     let chars2: Vec<char> = s2.chars().collect();
@@ -22,20 +19,9 @@ fn longest_common_subsequence(s1: &str, s2: &str) -> i32 {
     dp[n - 1][m - 1]
 }
 
-// fn main() {
-// }
-
 fn main() {
-    thread::spawn(|| {
-        for i in 1..10 {
-            println!("hi number {} from the spawned thread!", i);
-            thread::sleep(Duration::from_millis(1));
-        }
-    });
+    let s1 = "abcde";
+    let s2 = "ace";
 
-    for i in 1..5 {
-        println!("hi number {} from the main thread!", i);
-        thread::sleep(Duration::from_millis(1));
-    }
+    println!("lcs:{}", longest_common_subsequence(s1, s2));
 }
-

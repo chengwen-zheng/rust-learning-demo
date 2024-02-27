@@ -8,4 +8,4 @@ edition = "2021"
 [dependencies]
 
 [lib]
-path  = "./src/methods.rs"  # This should match the name of your crate
+path  = "./src/thread/thread1.rs"  # This should match the name of your crate
