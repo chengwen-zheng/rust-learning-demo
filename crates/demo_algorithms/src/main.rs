@@ -1,4 +1,4 @@
-use std::cmp::max;
+use std::cmp::{max, min};
 use std::sync::{Arc, Mutex};
 use std::thread;
 
@@ -23,8 +23,8 @@ fn main() {
             // 1. 计算出本轮能够计算的单元格
             let mut dp = dp_clone.lock().unwrap();
 
-            for j in (0..m) {
-                let index = i.checked_sub(j).unwrap_or(usize::MAX);
+            for j in (0..min(i, m)) {
+                let index = i - j;
                 println!("j:i({}{})", j, index);
             }
         });
