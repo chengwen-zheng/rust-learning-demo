@@ -3,8 +3,8 @@ use std::sync::{Arc, Mutex};
 use std::{char, thread};
 
 fn main() {
-    let s1 = "abcde";
-    let s2 = "ace";
+    let s1 = "abc";
+    let s2 = "def";
 
     let chars1: Arc<Vec<char>> = Arc::new(s1.chars().collect());
     let chars2: Arc<Vec<char>> = Arc::new(s2.chars().collect());
@@ -18,7 +18,7 @@ fn main() {
     for i in 0..round {
         let dp_clone: Arc<Mutex<Vec<Vec<i32>>>> = Arc::clone(&dp);
         let mut handles: Vec<thread::JoinHandle<()>> = vec![];
-        print!("==============={}: ", i);
+        // print!("==============={}: ", i);
         let chars1_clone: Arc<Vec<char>> = chars1.clone();
         let chars2_clone = chars2.clone();
         let handle = thread::spawn(move || {
@@ -26,8 +26,14 @@ fn main() {
             let mut dp = dp_clone.lock().unwrap();
             for j in (0..min(i + 1, m)).rev() {
                 let index: usize = i - j;
-
-                println!("j:index({}{})", j, index);
+                if index >= n {
+                    continue;
+                }
+                if chars1_clone[j] == chars2_clone[index] {
+                    dp[index + 1][j + 1] = dp[index][j] + 1;
+                } else {
+                    dp[index + 1][j + 1] = max(dp[index][j + 1], dp[index + 1][j]);
+                }
             }
         });
         // 2. 将任务分配给线程执行
@@ -39,6 +45,5 @@ fn main() {
     }
 
     let dp = dp.lock().unwrap();
-    println!("{:?}", dp[n][m]);
-    println!("{:?}", dp);
+    println!("lcS=========>{:?}", dp[n][m]);
 }
