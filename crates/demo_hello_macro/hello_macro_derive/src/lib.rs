@@ -44,5 +44,3 @@ pub fn make_answer(_item: TokenStream) -> TokenStream {
 pub fn print_hello(_item: TokenStream) -> TokenStream {
     "println!(\"hello\")".parse().unwrap()
 }
-
-
