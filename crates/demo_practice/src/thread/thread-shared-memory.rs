@@ -175,14 +175,29 @@ mod tests {
     fn test_convar_produce_consume() {
         let cond = Arc::new(Condvar::new());
         let count = Arc::new(Mutex::new(0));
-        let ccond = cond.clone();
-        let count_clone = Arc::clone(&count);
-
+        let mut handles = vec![];
+        
         for _ in 0..10 {
+            let ccond = cond.clone();
+            let count_clone = Arc::clone(&count);
             let t_consume = spawn(move || {
                 let mut lock = count_clone.lock().unwrap();
                 loop {
-                    if *lock < 3 {
+                    while *lock < 0 {
+                        lock = ccond.wait(lock).unwrap();
+                    }
+                    *lock -= 1;
+                    print!(")");
+                    ccond.notify_all();
+                }
+            });
+            let ccond = cond.clone();
+            let count_clone = Arc::clone(&count);
+            let t_produce = spawn(move || {
+                let mut lock = count_clone.lock().unwrap();
+
+                loop {
+                    while *lock > 3 {
                         lock = ccond.wait(lock).unwrap();
                     }
                     *lock += 1;
@@ -190,20 +205,13 @@ mod tests {
                     ccond.notify_all();
                 }
             });
-            let t_produce = spawn(move || {
-                let mut lock = count_clone.lock().unwrap();
+            
+            handles.push(t_consume);
+            handles.push(t_produce);
+        }
 
-                loop {
-                    if *lock > 0 {
-                        lock = ccond.wait(lock).unwrap();
-                    }
-                    *lock += 1;
-                    print!(")");
-                    ccond.notify_all();
-                }
-            });
-            t_consume.join();
-            t_produce.join();
+        for handle in handles {
+            handle.join().unwrap();
         }
     }
 }
