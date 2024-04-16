@@ -160,7 +160,7 @@ mod tests {
             sleep(Duration::from_millis(1000));
             *flag.lock().unwrap() = true;
             counter += 1;
-            if counter > 3 {
+            if counter > 2 {
                 break;
             }
             println!("outside counter: {}", counter);
@@ -171,6 +171,7 @@ mod tests {
     }
 
     // 打印括号 n = 3， Thread-n = 10
+    // 而 Rust 考虑到了这一点，为我们提供了条件变量(Condition Variables)，它经常和Mutex一起使用，可以让线程挂起，直到某个条件发生后再继续执行，其实Condvar我们在之前的多线程章节就已经见到过，
     #[test]
     fn test_convar_produce_consume() {
         let cond = Arc::new(Condvar::new());
@@ -183,7 +184,7 @@ mod tests {
             let t_consume = spawn(move || {
                 let mut lock = count_clone.lock().unwrap();
                 loop {
-                    while *lock < 0 {
+                    while *lock <= 0 {
                         lock = ccond.wait(lock).unwrap();
                     }
                     *lock -= 1;
@@ -197,7 +198,7 @@ mod tests {
                 let mut lock = count_clone.lock().unwrap();
 
                 loop {
-                    while *lock > 3 {
+                    while *lock >= 2 {
                         lock = ccond.wait(lock).unwrap();
                     }
                     *lock += 1;
@@ -205,9 +206,8 @@ mod tests {
                     ccond.notify_all();
                 }
             });
-            
-            handles.push(t_consume);
             handles.push(t_produce);
+            handles.push(t_consume);
         }
 
         for handle in handles {

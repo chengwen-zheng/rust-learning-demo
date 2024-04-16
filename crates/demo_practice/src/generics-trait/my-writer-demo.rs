@@ -32,11 +32,17 @@ impl MyWriter<File> {
     }
 }
 
-fn main() {
-    let mut writer = MyWriter::<BufWriter<TcpStream>>::new("127.0.0.1:8080");
-    writer.write("hello world!");
 
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    let mut writer = MyWriter::<File>::new("/etc/hosts");
-    writer.write("127.0.0.1 localhost");
+    #[test]
+    fn test_writer() {
+      let mut writer = MyWriter::<BufWriter<TcpStream>>::new("127.0.0.1:8080");
+      writer.write("hello world!");
+
+      let mut writer = MyWriter::<File>::new("/etc/hosts");
+      writer.write("127.0.0.1 localhost");
+    }
 }

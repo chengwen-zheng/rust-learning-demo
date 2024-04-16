@@ -6,6 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+futures = "0.3"
+
 
 [lib]
-path  = "./src/thread/thread-shared-memory.rs"  # This should match the name of your crate
+path  = "./src/thread/thread-executor.rs"  # This should match the name of your crate
