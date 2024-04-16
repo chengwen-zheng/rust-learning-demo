@@ -248,4 +248,53 @@ mod tests {
             Ref(&'a i32),
         }
     }
+
+    #[test]
+    fn test11() {
+        let mut num = 5;
+        {
+            // 把 num（5）所有权给 move 到了 add_num 中，
+            // 使用其成为闭包中的局部变量。
+            let mut add_num = move |x: i32| num += x;
+            add_num(5);
+            println!("num(move)={}", num); //输出10
+        }
+        //因为i32实现了 <code data-enlighter-language="raw" class="EnlighterJSRAW">Copy</code>，所以，这里还可以访问
+        println!("num(move)={}", num); //输出5
+    }
+
+    #[test]
+    fn test12() {
+        let mut num = 5;
+        {
+            // 把 num（5）所有权给 move 到了 add_num 中，
+            // 使用其成为闭包中的局部变量。
+            let mut add_num = move |x: i32| num += x;
+            add_num(5);
+            println!("num(move)={}", num); //输出10
+        }
+        //因为i32实现了 <code data-enlighter-language="raw" class="EnlighterJSRAW">Copy</code>，所以，这里还可以访问
+        println!("num(move)={}", num); //输出5
+    }
+
+    #[test]
+    fn test13() {
+        let mut arr = vec![1, 2, 3];
+        // cache the last item
+        let last = arr[arr.len() - 1];
+        // let last = arr.last();
+        arr.push(4);
+        // consume previously stored last item
+        println!("last: {:?}", last);
+      }
+
+      #[test]
+      fn test14() {
+        let mut arr = vec![String::from("a"), String::from("b")];
+        // cache the last item
+        let last = &arr[arr.len() - 1];
+        println!("last: {:?}", last);
+        arr.push(String::from("c"));
+        // consume previously stored last item
+    }
 }
